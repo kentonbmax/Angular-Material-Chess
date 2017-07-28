@@ -1,5 +1,5 @@
 'use strict';
-
+// TODO: finish moves.
 angular.module('moves', [])
   .factory('Moves', ['Pieces', 'Move', function(Pieces, Move) {
     var moves = {}
