@@ -1,0 +1,11 @@
+.chessboard{
+    border-width: 3px;
+    border-color: darkslategray;
+    border-style: solid;
+}
+
+.green {
+  background: #b9f6ca; 
+}
+
+
