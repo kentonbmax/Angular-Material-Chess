@@ -10,7 +10,7 @@ angular.module('move', [])
     move.currentPlayer = 0
 
     function getPlayerPieceRange(player){
-      return player === PLAYERS.white? [1,7]: [8,13]
+      return (player === PLAYERS.white)? [1,8]: [7,13]
     }
 
     function getCapturedPieces() {
