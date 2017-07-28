@@ -8,4 +8,10 @@
   background: #b9f6ca; 
 }
 
+.tile-highlight{
+    border-width: 3px;
+    border-color: orange;
+    border-style: solid;
+}
+
 

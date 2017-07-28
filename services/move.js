@@ -33,16 +33,18 @@ angular.module('move', [])
       return player === PLAYERS.white? PLAYERS.black: PLAYERS.white
     }
 
-    move.validPiece = function(player, piece) {
+    move.validPiece = function(player, pieceId) {
       var playerPieceRange = getPlayerPieceRange(player)
-      return _.inRange(piece.pieceId, playerPieceRange[0], playerPieceRange[1])
+      return _.inRange(pieceId, playerPieceRange[0], playerPieceRange[1])
     }
 
-    move.canMove = function(player, piece, startIndex) {
-      var validPiece = move.validPiece(player, piece)
-      var validMove  = _.inRange(piece.index, 0, 65)
-      if(validPiece && validMove) {
-        startIndex = startIndex
+    move.validMove = function(player, targetTile) {
+      return !move.validPiece(player, targetTile.pieceId)
+    }
+
+    move.onBoard = function(index) {
+      var validMove  = _.inRange(index, 0, 65)
+      if(validMove) {
         return true
       } else {
         return false

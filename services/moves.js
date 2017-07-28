@@ -5,7 +5,7 @@ angular.module('moves', [])
     var moves = {}
     var startingIndexs = Pieces.getStartingIndex()
 
-    moves.pawn = function(board, currentIndex) {
+    moves.pawn = function(board, currentIndex, moveFunc) {
         if(onboard(newIndex)) {
             if(isCapture(board, newIndex)) {
 

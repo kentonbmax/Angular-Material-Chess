@@ -32,19 +32,24 @@ function ChessController(Board, Move, Pieces){
 
     vm.clickTile = function(tile) {
         var moveMade = false
-        var canMove = Move.canMove(vm.player, vm.board[tile.index], tile.index)
+        var validMove = false
+        var validPlayerPiece = Move.validPiece(vm.player, tile.pieceId)
         var isMove = vm.pieceStartIndex && vm.board[vm.pieceStartIndex] !== tile
         
         if(isMove) {
-            vm.player = Move.makeMove(vm.player, vm.board[vm.pieceStartIndex], vm.pieceStartIndex, tile.index, tile.pieceId) 
-            Board.move(vm.pieceStartIndex, tile.index)
-            vm.board = Board.board
-            moveMade = true
+            var onBoard = Move.onBoard(tile.index)
+            validMove = Move.validMove(vm.player, tile)
+            if(onBoard && validMove){
+                vm.player = Move.makeMove(vm.player, vm.board[vm.pieceStartIndex], vm.pieceStartIndex, tile.index, tile.pieceId) 
+                Board.move(vm.pieceStartIndex, tile.index)
+                vm.board = Board.board
+                moveMade = true
+            }
         }
 
-        vm.move = canMove
-        vm.pieceStartIndex = moveMade? null: tile.index
-        vm.moveMessage = updateMoveMessage(canMove||moveMade)
+        vm.pieceStartIndex = moveMade ? null: tile.index
+        vm.moveMessage = updateMoveMessage(moveMade, validPlayerPiece)
+        moveMade = false
     }
 
     function reset() {
@@ -54,11 +59,17 @@ function ChessController(Board, Move, Pieces){
         pieceStartIndex = null
     }
 
-    function updateMoveMessage(move) {
+    function updateMoveMessage(moveMade, validPlayerPiece) {
+        var makeAMove = 'Make a Move'
+
+        if(moveMade) {
+            return makeAMove
+        }
+
         if(vm.player > -1 && pieceStartIndex > -1) {
-            return move? 'Valid to Move' : 'Invalid to Move'
+            return validPlayerPiece? 'Valid to Move' : 'Invalid to Move'
         } else {
-            return 'Make a move!'
+            return makeAMove
         }
     }
 }
