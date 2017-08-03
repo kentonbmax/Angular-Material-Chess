@@ -5,6 +5,11 @@ angular.module('pieces', [])
 
     var piecesObj = {}
 
+    const PLAYERS = {white:0, black:1}
+
+    const BLACK_RANGE = [7,13]
+    const WHITE_RANGE = [1,7] 
+
     const PIECES = {empty: 0, wp:1, wn:2, wb:3, wr:4, wq:5, wk:6, 
                             bp:7, bn:8, bb:9, br:10, bq:11, bk:12}
 
@@ -36,9 +41,20 @@ angular.module('pieces', [])
       return _.find(STARTING_INDEXS, piece)
     }
 
+    function getPlayerPieceRange(player){
+      return (player === PLAYERS.white)? WHITE_RANGE: BLACK_RANGE
+    }
+
+    piecesObj.validPlayerPiece = function(player, pieceId) {
+      var playerPieceRange = getPlayerPieceRange(player)
+      return _.inRange(pieceId, playerPieceRange[0], playerPieceRange[1])
+    }
+
     piecesObj.pieces = PIECES
+    piecesObj.players = PLAYERS
 
     Object.freeze(piecesObj.pieces)
+    Object.freeze(piecesObj.players)
 
     return piecesObj
   }])

@@ -1,17 +1,12 @@
 'use strict';
 
 angular.module('move', [])
-  .factory('Move', [function() {
+  .factory('Move', ['Pieces', function(Pieces) {
     var move = {}
-    const PLAYERS = {white:0, black:1}
     var currentIndex = null
     move.moves = []
     move.capturedPieces = []
     move.currentPlayer = 0
-
-    function getPlayerPieceRange(player){
-      return (player === PLAYERS.white)? [1,8]: [7,13]
-    }
 
     function getCapturedPieces() {
       return move.capturedPieces
@@ -23,23 +18,35 @@ angular.module('move', [])
 
     // updates moves array which tacks history
     move.makeMove = function(player, piece, startIndex, endIndex, captureId){
-      var pieceRange = getPlayerPieceRange(player)
       move.moves.push({player:player, piece:piece, start: startIndex, end:endIndex, captureId:captureId})
+      var validCapter = move.isCapture(player, captureId)
       
-      if(captureId > 0) {
-        move.capturedPieces.push({payer: player, id:captureId})
+      if(validCapter) {
+        move.capturedPieces.push({index: move.capturedPieces.length + 1, 
+          player: player, id:captureId})
+        return captureId
       }
 
-      return player === PLAYERS.white? PLAYERS.black: PLAYERS.white
+      return Pieces.pieces.empty
     }
 
-    move.validPiece = function(player, pieceId) {
-      var playerPieceRange = getPlayerPieceRange(player)
-      return _.inRange(pieceId, playerPieceRange[0], playerPieceRange[1])
+    move.isMove = function(player, targetPieceId) {
+      if(Pieces.pieces.empty === targetPieceId) {
+        return true
+      }
+      var otherPlayer = !Pieces.validPlayerPiece(player, targetPieceId)
+
+      return otherPlayer
+    }
+
+    move.isCapture = function(player, captureId) {
+      return Pieces.pieces.empty !== captureId
+      var validCapter = !Pieces.validPlayerPiece(player, captureId) && captureId !== Pieces.pieces.empty
+      return validCapter
     }
 
     move.validMove = function(player, targetTile) {
-      return !move.validPiece(player, targetTile.pieceId)
+      return !Pieces.validPlayerPiece(player, targetTile.pieceId)
     }
 
     move.onBoard = function(index) {

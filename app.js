@@ -20,14 +20,15 @@ function ChessController(Board, Move, Pieces){
     vm.player = -1
     var pieceStartIndex = null
     var pieceLastIndex = -1
+    var lastMoveIndex = -1
     vm.makeMove = false
+    vm.capturedPieces = []
     console.log('start')
 
     vm.start = function() {
         reset()
         Board.initalize()
         vm.board = Board.board 
-        vm.player = 0
         vm.reset = vm.reset? false: true
     }
 
@@ -35,19 +36,29 @@ function ChessController(Board, Move, Pieces){
         var moveMade = false
         var validMove = false
         var validMovePiece = false
-        var validPlayerPiece = Move.validPiece(vm.player, tile.pieceId)
-        var isMove = vm.pieceStartIndex && vm.board[vm.pieceStartIndex] !== tile
+        var validPlayerPiece = Pieces.validPlayerPiece(vm.player, tile.pieceId)
+        var isMove = Move.isMove(vm.player, tile.pieceId)
         
         if(isMove) {
             var onBoard = Move.onBoard(tile.index)
             validMove = Move.validMove(vm.player, tile) 
 
             if(onBoard && validMove){
-                vm.player = Move.makeMove(vm.player, vm.board[vm.pieceStartIndex], vm.pieceStartIndex, tile.index, tile.pieceId) 
+                var capturedPiece = Move.makeMove(vm.player, vm.board[vm.pieceStartIndex], 
+                    vm.pieceStartIndex, tile.index, tile.pieceId) 
+                
+                if(capturedPiece > 0) {
+                    vm.capturedPieces.push(Pieces.getSymbol(capturedPiece))
+                }
+
                 Board.move(vm.pieceStartIndex, tile.index)
                 vm.board = Board.board
                 vm.pieceLastIndex = -1
+                vm.lastMoveIndex = tile.index
                 moveMade = true
+                vm.player = vm.player === Pieces.players.white? 
+                                          Pieces.players.black:
+                                          Pieces.players.white
             }
         }
 
@@ -60,7 +71,7 @@ function ChessController(Board, Move, Pieces){
     function reset() {
         vm.moveMessage = ''
         vm.reset = false
-        vm.player = -1
+        vm.player = Pieces.players.white
         pieceStartIndex = null
     }
 
