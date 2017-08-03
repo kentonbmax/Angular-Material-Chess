@@ -22,12 +22,13 @@ angular.module('move', [])
       var validCapter = move.isCapture(player, captureId)
       
       if(validCapter) {
-        move.capturedPieces.push({index: move.capturedPieces.length + 1, 
-          player: player, id:captureId})
-        return captureId
+        var capturedPiece = {index: move.capturedPieces.length + 1, 
+          player: player, id:captureId, symbol: Pieces.getSymbol(captureId)}
+        move.capturedPieces.push(capturedPiece)
+        return capturedPiece
       }
 
-      return Pieces.pieces.empty
+      return null
     }
 
     move.isMove = function(player, targetPieceId) {

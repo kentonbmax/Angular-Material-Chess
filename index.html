@@ -2,7 +2,7 @@
 <head>
   <meta charset="utf-8">
 
-  <title>Kentons Amazing Angular Chess</title>
+  <title>Kentons Amazing 2 Player Angular Chess</title>
   <meta name="description" content="ChesterMcChelss">
   <meta name="author" content="Kenton Bocock">
   <link rel="stylesheet" href="./node_modules/angular-material/angular-material.min.css">
@@ -36,7 +36,7 @@
         <md-list flex>
           <md-subheader class="md-no-sticky">Captured Pieces</md-subheader>
           <md-list-item ng-repeat="item in vm.capturedPieces" ng-click="null">
-            <span style="font-style: bold" ng-bind-html="item | unsafe"></span>
+            <span style="font-style: bold" ng-bind-html="item.symbol | unsafe"></span>
           </md-list-item>
         </md-list>
       </div>

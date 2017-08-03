@@ -35,7 +35,6 @@ function ChessController(Board, Move, Pieces){
     vm.clickTile = function(tile) {
         var moveMade = false
         var validMove = false
-        var validMovePiece = false
         var validPlayerPiece = Pieces.validPlayerPiece(vm.player, tile.pieceId)
         var isMove = Move.isMove(vm.player, tile.pieceId)
         
@@ -47,8 +46,8 @@ function ChessController(Board, Move, Pieces){
                 var capturedPiece = Move.makeMove(vm.player, vm.board[vm.pieceStartIndex], 
                     vm.pieceStartIndex, tile.index, tile.pieceId) 
                 
-                if(capturedPiece > 0) {
-                    vm.capturedPieces.push(Pieces.getSymbol(capturedPiece))
+                if(capturedPiece) {
+                    vm.capturedPieces.push(capturedPiece)
                 }
 
                 Board.move(vm.pieceStartIndex, tile.index)
@@ -65,13 +64,13 @@ function ChessController(Board, Move, Pieces){
         vm.pieceStartIndex = moveMade ? null: tile.index
         vm.moveMessage = updateMoveMessage(moveMade, validPlayerPiece)
         moveMade = false
-        vm.pieceLastIndex = validMovePiece? tile.index: -1
     }
 
     function reset() {
         vm.moveMessage = ''
         vm.reset = false
         vm.player = Pieces.players.white
+        vm.capturedPieces = []
         pieceStartIndex = null
     }
 
