@@ -1,4 +1,5 @@
 ## vNext Angular + Angular Material + Chess 
+1. Setup Angular CLI => `npm install -g @angular/cli`
 1. Run `docker-compose up`
 
 ## v1.0 Angular + Angular-Material + Chess
