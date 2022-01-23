@@ -1,4 +1,7 @@
-## Angular + Angular-Material + Chess
+## vNext Angular + Angular Material + Chess 
+1. Run `docker-compose up`
+
+## v1.0 Angular + Angular-Material + Chess
 1. Run npm install
 2. Open Index.html in your favorite browser
 
